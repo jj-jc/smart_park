@@ -1,0 +1,10 @@
+sudo pip3 install opencv-python 
+sudo apt-get install libcblas-dev
+sudo apt-get install libatlas-base-dev
+sudo apt-get install libjasper-dev
+sudo apt-get install libqtgui4
+sudo apt-get install libqt4-test
+
+pip3 install pycurl
+
+pip install pytesseract o pip3 install pytesseract
