@@ -82,13 +82,16 @@ def welcome():
     leds_control(True, False)
 
 def access_granted():
+    print("Access granted")
     # Show "Access granted" in LCD
     mylcd.lcd_clear()
     mylcd.lcd_display_string("Access granted!", 1)
+    mylcd.lcd_display_String("LP: 2364APT", 2)
     # Turn on green led and turn off red led
     leds_control(False, True)
 
 def access_denied():
+    print("Access denied")
     # Show "Access denied!" if permission is not True
     mylcd.lcd_clear()
     mylcd.lcd_display_string("Access denied!", 1)
