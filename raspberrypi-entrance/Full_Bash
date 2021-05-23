@@ -1,0 +1,6 @@
+python3 Ultrasonic_entry.py &
+python3 Ultrasonic_exit.py &
+python3 Image_Capture_entry.py &
+python3 Image_Capture_exit.py &
+python3 entrance_control.py &
+python3 exit_control.py &

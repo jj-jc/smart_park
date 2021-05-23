@@ -12,7 +12,7 @@ def on_connect(client, userdata, flags, rc):
     print("Connected with mqtt "+str(rc))
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("smart_park/permission_entry")
+    client.subscribe("smart_park/permission_exit")
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -26,15 +26,17 @@ def on_message(client, userdata, msg):
             # Let the car to enter
             
             entry_time = time.time()
-            access_granted()
+            #access_granted()
+            leds_control(False, True)
             servo_control()
-            welcome()
+            #welcome()
             
         else:
             # Dont let the car to enter
-            access_denied()
+            #access_denied()
             time.sleep(2)
-            welcome()
+            leds_control(True, False)
+            #welcome()
 
 # This function controls the servo
 def servo_control():
@@ -74,7 +76,7 @@ def AngleToDuty(ang):
 def leds_control(red, green):
     GPIO.output(RED_LED, red) 
     GPIO.output(GREEN_LED, green)
-
+"""
 def welcome():
     mylcd.lcd_clear()
     mylcd.lcd_display_string("   Welcome to", 1)
@@ -95,7 +97,7 @@ def access_denied():
     mylcd.lcd_display_string("Unknown LP!", 2)
     # Turn on red led and turn off green led
     leds_control(True, False)
-
+"""
 # Main programme
 
 # Configure red led
@@ -109,9 +111,9 @@ GPIO.setmode(GPIO.BCM) # GPIO numbering
 GPIO.setup(GREEN_LED, GPIO.OUT) # Setup pin BCM 18 as output
 
 # Initialize the LCD display
-mylcd = I2C_LCD_driver.lcd()
-welcome()
-
+#mylcd = I2C_LCD_driver.lcd()
+#welcome()
+leds_control(True, False)
 # Create the mqtt client
 client = mqtt.Client()
 client.on_connect = on_connect # When client is connected it does what is specified in on_conncect function

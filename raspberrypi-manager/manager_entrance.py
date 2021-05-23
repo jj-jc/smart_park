@@ -7,7 +7,7 @@ def on_connect(client, userdata, flags, rc):
     print("Connected with mqtt "+str(rc))
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("smart_park/entrance2")
+    client.subscribe("smart_park/entry_plate")
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -26,7 +26,7 @@ def on_message(client, userdata, msg):
     print(permission)
     # Send the permission to the topic
     #client.publish("smart_park/permission_entrance", None)
-    client.publish("smart_park/permission_entrance2", permission)
+    client.publish("smart_park/permission_entry", permission)
     
     # Open the file
     
