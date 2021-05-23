@@ -4,30 +4,37 @@ import paho.mqtt.client as mqtt
 import I2C_LCD_driver # Import the LCD library
 import time 
 
+current_time = 0
+entry_time = 0
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
     
     print("Connected with mqtt "+str(rc))
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("smart_park/permission_entrance")
+    client.subscribe("smart_park/permission_entrance2")
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     # Read from the topic the recognized license plate
     permission = str(msg.payload.decode("utf-8"))
-    
-    if permission == "True":
-        # Let the car to enter
-        access_granted()
-        servo_control()
-        welcome()
-        
-    else:
-        # Dont let the car to enter
-        access_denied()
-        time.sleep(3)
-        welcome()
+    global current_time
+    global entry_time
+    current_time = time.time()
+    if current_time-entry_time > 10:
+        if permission == "True":
+            # Let the car to enter
+            
+            entry_time = time.time()
+            access_granted()
+            servo_control()
+            welcome()
+            
+        else:
+            # Dont let the car to enter
+            access_denied()
+            time.sleep(0.5)
+            welcome()
 
 # This function controls the servo
 def servo_control():
@@ -52,7 +59,7 @@ def servo_control():
         time.sleep(DELAY)
         
     # Wait and lower the barrier
-    time.sleep(10)
+    time.sleep(5)
     for pos in range(arrive,depart,-incStep):
         duty=AngleToDuty(pos)
         pwm.ChangeDutyCycle(duty)

@@ -7,12 +7,13 @@ def on_connect(client, userdata, flags, rc):
     print("Connected with mqtt "+str(rc))
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("smart_park/entrance")
+    client.subscribe("smart_park/entrance2")
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     # Read from the topic the recognized license plate
     license_plate = str(msg.payload.decode("utf-8"))
+    print(license_plate)
     
     # Compare the recognized license plate with the database
     permission = False
@@ -22,9 +23,10 @@ def on_message(client, userdata, msg):
             break
         else:
             permission = False
-
-    # Send the permission to the topic 
-    client.publish("smart_park/permission_entrance", permission)
+    print(permission)
+    # Send the permission to the topic
+    #client.publish("smart_park/permission_entrance", None)
+    client.publish("smart_park/permission_entrance2", permission)
     
     # Open the file
     
@@ -40,6 +42,7 @@ def on_message(client, userdata, msg):
 # Open database and read license plates
 database = open("database.txt")
 license_plates = database.readlines()
+print(license_plates)
 database.close()
 
 # Eliminate the character '\n' in license plates
