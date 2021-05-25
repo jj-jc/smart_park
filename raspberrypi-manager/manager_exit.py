@@ -12,6 +12,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     # Read from the topic the recognized license plate
     license_plate = str(msg.payload.decode("utf-8"))
+    print(license_plate)
     
     # First, read the file with the cars which are inside
     cars_inside = open("cars_inside.txt", "r")
@@ -25,11 +26,12 @@ def on_message(client, userdata, msg):
         if cars[i][len(cars[i])-1] == '\n': # Eliminate the character '\n' in license plates
             cars[i]=cars[i][:-1] 
         if license_plate != cars[i]:
+            permission = False
             cars_inside.write(cars[i])
         else:
             permission = True
     cars_inside.close()
-    
+    print(permission)
     # Send the permission to the topic
     if permission == False:
         print("There is no car inside of the parking with that license plate\n")

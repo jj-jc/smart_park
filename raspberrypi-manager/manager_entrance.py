@@ -25,7 +25,6 @@ def on_message(client, userdata, msg):
             permission = False
     print(permission)
     # Send the permission to the topic
-    #client.publish("smart_park/permission_entrance", None)
     client.publish("smart_park/permission_entry", permission)
     
     # Open the file
